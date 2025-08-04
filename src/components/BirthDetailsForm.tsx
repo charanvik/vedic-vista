@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -50,17 +51,16 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
 
   const handleNumberChange = (field: keyof typeof birthDetails, value: string) => {
     const numValue = parseFloat(value);
-    if (!isNaN(numValue)) {
+    if (!isNaN(numValue) || value === '' || value === '-') {
       setBirthDetails(prev => ({
         ...prev,
-        [field]: numValue,
+        [field]: value === '' || value === '-' ? 0 : numValue,
       }));
     }
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Validate all required fields have valid numbers
     const isValid = Object.values(birthDetails).every(value => 
       typeof value === 'number' && !isNaN(value)
     );
@@ -73,19 +73,15 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
   return (
     <Card className="w-full max-w-2xl mx-auto">
       <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold text-primary flex items-center justify-center gap-2">
-          <Calendar className="w-6 h-6" />
-          Birth Details
-        </CardTitle>
-        <p className="text-muted-foreground">Enter your birth information for accurate astrology reading</p>
+        <CardTitle className="text-2xl font-bold text-primary">Birth Details</CardTitle>
       </CardHeader>
       <CardContent>
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Date Section */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-lg font-semibold">
+            <div className="flex items-center gap-2 font-semibold">
               <Calendar className="w-5 h-5 text-primary" />
-              Birth Date
+              Date
             </div>
             <div className="grid grid-cols-3 gap-4">
               <div>
@@ -126,9 +122,9 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
 
           {/* Time Section */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-lg font-semibold">
+            <div className="flex items-center gap-2 font-semibold">
               <Clock className="w-5 h-5 text-primary" />
-              Birth Time
+              Time
             </div>
             <div className="grid grid-cols-3 gap-4">
               <div>
@@ -169,25 +165,24 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
 
           {/* Location Section */}
           <div className="space-y-4">
-            <div className="flex items-center gap-2 text-lg font-semibold">
+            <div className="flex items-center gap-2 font-semibold">
               <MapPin className="w-5 h-5 text-primary" />
-              Birth Location
+              Location
             </div>
             
             <LocationSearch onLocationSelect={handleLocationSelect} />
             
             {selectedLocation && (
               <div className="p-3 bg-muted rounded-lg">
-                <p className="text-sm text-muted-foreground">Selected Location:</p>
                 <p className="font-medium">{selectedLocation}</p>
                 <p className="text-xs text-muted-foreground">
-                  Lat: {birthDetails.latitude.toFixed(4)}, Lng: {birthDetails.longitude.toFixed(4)}
+                  {birthDetails.latitude.toFixed(4)}, {birthDetails.longitude.toFixed(4)}
                 </p>
               </div>
             )}
 
             <div>
-              <Label htmlFor="timezone">Timezone (hours from UTC)</Label>
+              <Label htmlFor="timezone">Timezone (UTC offset)</Label>
               <Input
                 id="timezone"
                 type="number"
@@ -201,7 +196,7 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
           </div>
 
           <Button type="submit" className="w-full" variant="sacred" disabled={isLoading}>
-            {isLoading ? "Generating Chart..." : "Generate Astrology Chart"}
+            {isLoading ? "Generating Charts..." : "Generate Charts"}
           </Button>
         </form>
       </CardContent>
