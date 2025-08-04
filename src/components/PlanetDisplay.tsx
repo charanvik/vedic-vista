@@ -39,11 +39,27 @@ const PlanetDisplay = ({ planets }: PlanetDisplayProps) => {
     return zodiacSigns[signNumber - 1] || "Unknown";
   };
 
+  // Filter out invalid planets and add safety checks
+  const validPlanets = planets.filter(planet => 
+    planet && 
+    planet.name && 
+    typeof planet.normDegree === 'number' && 
+    typeof planet.current_sign === 'number'
+  );
+
+  if (validPlanets.length === 0) {
+    return (
+      <div className="text-center py-8">
+        <p className="text-muted-foreground">No valid planetary data available.</p>
+      </div>
+    );
+  }
+
   return (
     <div className="space-y-4">
       <h2 className="text-2xl font-bold text-center text-primary mb-6">Planetary Positions</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        {planets.map((planet, index) => (
+        {validPlanets.map((planet, index) => (
           <Card key={index} className="hover:shadow-lg transition-shadow">
             <CardHeader className="pb-3">
               <CardTitle className="flex items-center justify-between text-lg">
@@ -65,11 +81,13 @@ const PlanetDisplay = ({ planets }: PlanetDisplayProps) => {
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">Degree:</span>
-                <span className="font-mono">{planet.normDegree.toFixed(2)}°</span>
+                <span className="font-mono">
+                  {typeof planet.normDegree === 'number' ? planet.normDegree.toFixed(2) : '0.00'}°
+                </span>
               </div>
               <div className="flex justify-between">
                 <span className="text-muted-foreground">House:</span>
-                <span className="font-semibold">{planet.current_sign}</span>
+                <span className="font-semibold">{planet.current_sign || 'Unknown'}</span>
               </div>
               {planet.isRetro === "true" && (
                 <div className="text-center">

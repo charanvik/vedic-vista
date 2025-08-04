@@ -44,7 +44,7 @@ const AstrologyChart = ({ planets }: AstrologyChartProps) => {
     const parseAstroData = (planetData: Planet[]) => {
       const parsedData: Record<string, any> = {};
       planetData.forEach(planet => {
-        if (planet && planet.name) {
+        if (planet && planet.name && typeof planet.normDegree === 'number' && typeof planet.current_sign === 'number') {
           parsedData[planet.name] = {
             name: planet.name,
             sign: planet.current_sign,

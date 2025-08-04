@@ -24,10 +24,11 @@ interface BirthDetailsFormProps {
 }
 
 const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
+  const currentDate = new Date();
   const [birthDetails, setBirthDetails] = useState({
-    year: new Date().getFullYear(),
-    month: new Date().getMonth() + 1,
-    date: new Date().getDate(),
+    year: currentDate.getFullYear(),
+    month: currentDate.getMonth() + 1,
+    date: currentDate.getDate(),
     hours: 12,
     minutes: 0,
     seconds: 0,
@@ -47,9 +48,26 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
     setSelectedLocation(address);
   };
 
+  const handleNumberChange = (field: keyof typeof birthDetails, value: string) => {
+    const numValue = parseFloat(value);
+    if (!isNaN(numValue)) {
+      setBirthDetails(prev => ({
+        ...prev,
+        [field]: numValue,
+      }));
+    }
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    onSubmit(birthDetails);
+    // Validate all required fields have valid numbers
+    const isValid = Object.values(birthDetails).every(value => 
+      typeof value === 'number' && !isNaN(value)
+    );
+    
+    if (isValid) {
+      onSubmit(birthDetails);
+    }
   };
 
   return (
@@ -76,7 +94,7 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   id="year"
                   type="number"
                   value={birthDetails.year}
-                  onChange={(e) => setBirthDetails(prev => ({ ...prev, year: parseInt(e.target.value) }))}
+                  onChange={(e) => handleNumberChange('year', e.target.value)}
                   min="1900"
                   max="2030"
                 />
@@ -87,7 +105,7 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   id="month"
                   type="number"
                   value={birthDetails.month}
-                  onChange={(e) => setBirthDetails(prev => ({ ...prev, month: parseInt(e.target.value) }))}
+                  onChange={(e) => handleNumberChange('month', e.target.value)}
                   min="1"
                   max="12"
                 />
@@ -98,7 +116,7 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   id="date"
                   type="number"
                   value={birthDetails.date}
-                  onChange={(e) => setBirthDetails(prev => ({ ...prev, date: parseInt(e.target.value) }))}
+                  onChange={(e) => handleNumberChange('date', e.target.value)}
                   min="1"
                   max="31"
                 />
@@ -119,7 +137,7 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   id="hours"
                   type="number"
                   value={birthDetails.hours}
-                  onChange={(e) => setBirthDetails(prev => ({ ...prev, hours: parseInt(e.target.value) }))}
+                  onChange={(e) => handleNumberChange('hours', e.target.value)}
                   min="0"
                   max="23"
                 />
@@ -130,7 +148,7 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   id="minutes"
                   type="number"
                   value={birthDetails.minutes}
-                  onChange={(e) => setBirthDetails(prev => ({ ...prev, minutes: parseInt(e.target.value) }))}
+                  onChange={(e) => handleNumberChange('minutes', e.target.value)}
                   min="0"
                   max="59"
                 />
@@ -141,7 +159,7 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   id="seconds"
                   type="number"
                   value={birthDetails.seconds}
-                  onChange={(e) => setBirthDetails(prev => ({ ...prev, seconds: parseInt(e.target.value) }))}
+                  onChange={(e) => handleNumberChange('seconds', e.target.value)}
                   min="0"
                   max="59"
                 />
@@ -175,7 +193,7 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                 type="number"
                 step="0.5"
                 value={birthDetails.timezone}
-                onChange={(e) => setBirthDetails(prev => ({ ...prev, timezone: parseFloat(e.target.value) }))}
+                onChange={(e) => handleNumberChange('timezone', e.target.value)}
                 min="-12"
                 max="14"
               />
