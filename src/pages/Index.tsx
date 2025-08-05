@@ -141,16 +141,25 @@ const Index = () => {
 
             <Tabs defaultValue="planets" className="w-full">
               <TabsList className="grid w-full grid-cols-3 sticky top-[4.5rem] z-40 bg-background/98 backdrop-blur-sm shadow-lg rounded-xl border mx-1">
-                <TabsTrigger value="planets" className="flex flex-col items-center gap-1 py-4 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <Star className="w-5 h-5" />
+                <TabsTrigger 
+                  value="planets" 
+                  className="flex flex-col items-center gap-1 py-4 rounded-lg transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
+                >
+                  <Star className="w-4 h-4" />
                   <span className="text-xs font-medium">Planets</span>
                 </TabsTrigger>
-                <TabsTrigger value="chart" className="flex flex-col items-center gap-1 py-4 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <Moon className="w-5 h-5" />
+                <TabsTrigger 
+                  value="chart" 
+                  className="flex flex-col items-center gap-1 py-4 rounded-lg transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
+                >
+                  <Moon className="w-4 h-4" />
                   <span className="text-xs font-medium">Birth Chart</span>
                 </TabsTrigger>
-                <TabsTrigger value="navamsha" className="flex flex-col items-center gap-1 py-4 rounded-lg data-[state=active]:bg-primary data-[state=active]:text-primary-foreground">
-                  <Sun className="w-5 h-5" />
+                <TabsTrigger 
+                  value="navamsha" 
+                  className="flex flex-col items-center gap-1 py-4 rounded-lg transition-all duration-200 data-[state=active]:bg-primary data-[state=active]:text-primary-foreground data-[state=active]:shadow-md"
+                >
+                  <Sun className="w-4 h-4" />
                   <span className="text-xs font-medium">Navamsha</span>
                 </TabsTrigger>
               </TabsList>

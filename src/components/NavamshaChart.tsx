@@ -42,7 +42,7 @@ const NavamshaChart = ({ planets }: NavamshaChartProps) => {
     existingLabels.forEach(label => label.remove());
 
     const renderNavamshaChart = () => {
-      // Group planets by house
+      // Group planets by house number (not sign like birth chart)
       const housesWithPlanets: Record<string, NavamshaPlanet[]> = {};
       
       planets.forEach(planet => {
@@ -53,7 +53,7 @@ const NavamshaChart = ({ planets }: NavamshaChartProps) => {
         }
       });
 
-      // Render planets in houses
+      // Render planets in houses based on house_number
       for (let i = 1; i <= 12; i++) {
         const houseId = `house${i}`;
         const housePolygon = svg.querySelector(`#${houseId}`) as SVGPolygonElement;
@@ -67,11 +67,11 @@ const NavamshaChart = ({ planets }: NavamshaChartProps) => {
           planetsInHouse.forEach((planet, index) => {
             const textElement = document.createElementNS('http://www.w3.org/2000/svg', 'text');
             const centerX = bbox.x + bbox.width / 2;
-            const startY = (bbox.y + bbox.height / 2) - ((planetsInHouse.length - 1) * 20) / 2;
+            const startY = (bbox.y + bbox.height / 2) - ((planetsInHouse.length - 1) * 18) / 2;
 
             textElement.setAttribute('x', centerX.toString());
-            textElement.setAttribute('y', (startY + (index * 20)).toString());
-            textElement.textContent = `${planetSymbols[planet.name] || planet.name} (${planet.current_sign})`;
+            textElement.setAttribute('y', (startY + (index * 18)).toString());
+            textElement.textContent = `${planetSymbols[planet.name] || planet.name.substring(0,2)}`;
 
             textElement.classList.add('planet-label');
             if (planet.name === "Ascendant") textElement.classList.add('ascendant-label');
@@ -95,20 +95,21 @@ const NavamshaChart = ({ planets }: NavamshaChartProps) => {
 
   return (
     <Card className="w-full mx-auto border-0 shadow-none">
-      <CardHeader className="pb-2 pt-3">
-        <CardTitle className="text-lg font-bold text-center text-primary font-orbitron">
+      <CardHeader className="pb-1 pt-2">
+        <CardTitle className="text-base font-bold text-center text-primary font-orbitron">
           Navamsha Chart
         </CardTitle>
       </CardHeader>
-      <CardContent className="px-2 pb-3">
+      <CardContent className="px-1 pb-2">
         <svg
           ref={svgRef}
-          className="w-full h-auto bg-card rounded-xl border-2 border-primary/20 shadow-lg"
-          viewBox="0 0 780 800"
+          className="w-full h-auto bg-card rounded-lg border border-primary/20 shadow-lg"
+          viewBox="0 0 780 780"
           preserveAspectRatio="xMidYMid meet"
           style={{
-            filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.15))',
-            minHeight: '280px'
+            filter: 'drop-shadow(0 4px 12px rgba(0,0,0,0.1))',
+            minHeight: '320px',
+            maxHeight: '400px'
           }}
         >
           {/* House polygons - same layout as birth chart */}

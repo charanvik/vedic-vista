@@ -1,5 +1,6 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 
 interface Planet {
   name: string;
@@ -39,13 +40,15 @@ const PlanetDisplay = ({ planets }: PlanetDisplayProps) => {
     return zodiacSigns[signNumber - 1] || "Unknown";
   };
 
-  // Filter out invalid planets and add safety checks
+  // Filter out invalid planets and exclude Ascendant for karaka calculations
   const validPlanets = planets.filter(planet => 
     planet && 
     planet.name && 
     typeof planet.normDegree === 'number' && 
     typeof planet.current_sign === 'number'
   );
+
+  const planetsForKaraka = validPlanets.filter(planet => planet.name !== "Ascendant");
 
   if (validPlanets.length === 0) {
     return (
@@ -55,34 +58,107 @@ const PlanetDisplay = ({ planets }: PlanetDisplayProps) => {
     );
   }
 
+  // Calculate Atmakaraka (highest degree) and Darakaraka (lowest degree)
+  const atmakaraka = planetsForKaraka.reduce((prev, current) => 
+    (prev.normDegree > current.normDegree) ? prev : current
+  );
+  
+  const darakaraka = planetsForKaraka.reduce((prev, current) => 
+    (prev.normDegree < current.normDegree) ? prev : current
+  );
+
   return (
-    <div className="space-y-3">
-      <div className="grid grid-cols-1 gap-3">
-        {validPlanets.map((planet, index) => (
-          <Card key={index} className="shadow-sm border">
-            <CardContent className="p-4">
-              <div className="flex items-center justify-between mb-3">
-                <div className="flex items-center gap-3">
-                  <span className="text-2xl">{planetIcons[planet.name] || "★"}</span>
-                  <div>
-                    <h3 className="font-semibold text-base">{planet.name}</h3>
-                    <p className="text-sm text-muted-foreground">
+    <div className="space-y-4">
+      <Card className="shadow-sm border">
+        <CardHeader className="pb-3">
+          <CardTitle className="text-base font-semibold text-primary font-orbitron">Planetary Positions</CardTitle>
+        </CardHeader>
+        <CardContent className="p-0">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-b">
+                <TableHead className="text-xs font-semibold">Planet</TableHead>
+                <TableHead className="text-xs font-semibold">Sign</TableHead>
+                <TableHead className="text-xs font-semibold">Degree</TableHead>
+                <TableHead className="text-xs font-semibold">Status</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {validPlanets.map((planet, index) => (
+                <TableRow key={index} className="border-b last:border-b-0">
+                  <TableCell className="py-3">
+                    <div className="flex items-center gap-2">
+                      <span className="text-lg">{planetIcons[planet.name] || "★"}</span>
+                      <span className="font-medium text-sm">{planet.name}</span>
+                    </div>
+                  </TableCell>
+                  <TableCell className="py-3">
+                    <span className="text-sm text-muted-foreground">
                       {getZodiacSign(planet.current_sign)}
-                    </p>
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-3">
+                    <span className="font-mono text-sm font-medium">
+                      {typeof planet.normDegree === 'number' ? planet.normDegree.toFixed(1) : '0.0'}°
+                    </span>
+                  </TableCell>
+                  <TableCell className="py-3">
+                    {planet.isRetro === "true" && (
+                      <Badge variant="destructive" className="text-xs">R</Badge>
+                    )}
+                  </TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
+        </CardContent>
+      </Card>
+
+      {/* Karaka Section */}
+      <div className="grid grid-cols-1 gap-3">
+        <Card className="shadow-sm border border-primary/20">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-sm text-primary">Atmakaraka (Soul)</h3>
+                <p className="text-xs text-muted-foreground">Highest degree planet</p>
+              </div>
+              <div className="text-right">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{planetIcons[atmakaraka.name] || "★"}</span>
+                  <div>
+                    <span className="font-semibold text-sm">{atmakaraka.name}</span>
+                    <div className="font-mono text-xs text-muted-foreground">
+                      {atmakaraka.normDegree.toFixed(1)}°
+                    </div>
                   </div>
-                </div>
-                <div className="text-right">
-                  <div className="font-mono text-sm font-medium">
-                    {typeof planet.normDegree === 'number' ? planet.normDegree.toFixed(1) : '0.0'}°
-                  </div>
-                  {planet.isRetro === "true" && (
-                    <Badge variant="destructive" className="text-xs mt-1">R</Badge>
-                  )}
                 </div>
               </div>
-            </CardContent>
-          </Card>
-        ))}
+            </div>
+          </CardContent>
+        </Card>
+
+        <Card className="shadow-sm border border-primary/20">
+          <CardContent className="p-4">
+            <div className="flex items-center justify-between">
+              <div>
+                <h3 className="font-semibold text-sm text-primary">Darakaraka (Spouse)</h3>
+                <p className="text-xs text-muted-foreground">Lowest degree planet</p>
+              </div>
+              <div className="text-right">
+                <div className="flex items-center gap-2">
+                  <span className="text-xl">{planetIcons[darakaraka.name] || "★"}</span>
+                  <div>
+                    <span className="font-semibold text-sm">{darakaraka.name}</span>
+                    <div className="font-mono text-xs text-muted-foreground">
+                      {darakaraka.normDegree.toFixed(1)}°
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </CardContent>
+        </Card>
       </div>
     </div>
   );
