@@ -146,20 +146,21 @@ const AstrologyChart = ({ planets }: AstrologyChartProps) => {
   }, [planets]);
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
-      <CardHeader>
-        <CardTitle className="text-2xl font-bold text-center text-primary">
-          Vedic Astrology Chart
+    <Card className="w-full mx-auto border-0 shadow-none">
+      <CardHeader className="pb-2 pt-3">
+        <CardTitle className="text-lg font-bold text-center text-primary font-orbitron">
+          Vedic Birth Chart
         </CardTitle>
       </CardHeader>
-      <CardContent className="flex justify-center">
+      <CardContent className="px-2 pb-3">
         <svg
           ref={svgRef}
-          className="w-full h-auto bg-background rounded-xl border max-w-2xl"
+          className="w-full h-auto bg-card rounded-xl border-2 border-primary/20 shadow-lg"
           viewBox="0 0 780 800"
           preserveAspectRatio="xMidYMid meet"
           style={{
-            filter: 'drop-shadow(0 10px 25px rgba(0,0,0,0.1))'
+            filter: 'drop-shadow(0 8px 20px rgba(0,0,0,0.15))',
+            minHeight: '280px'
           }}
         >
           {/* House polygons */}
