@@ -71,21 +71,21 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
   };
 
   return (
-    <Card className="w-full max-w-2xl mx-auto">
-      <CardHeader className="text-center">
-        <CardTitle className="text-2xl font-bold text-primary">Birth Details</CardTitle>
+    <Card className="mx-1 shadow-lg">
+      <CardHeader className="pb-4">
+        <CardTitle className="text-lg font-semibold text-primary">Birth Details</CardTitle>
       </CardHeader>
       <CardContent>
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-5">
           {/* Date Section */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 font-semibold">
-              <Calendar className="w-5 h-5 text-primary" />
-              Date
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 font-semibold text-sm">
+              <Calendar className="w-4 h-4 text-primary" />
+              Date of Birth
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-3">
               <div>
-                <Label htmlFor="year">Year</Label>
+                <Label htmlFor="year" className="text-xs text-muted-foreground">Year</Label>
                 <Input
                   id="year"
                   type="number"
@@ -93,10 +93,11 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   onChange={(e) => handleNumberChange('year', e.target.value)}
                   min="1900"
                   max="2030"
+                  className="h-12 text-center"
                 />
               </div>
               <div>
-                <Label htmlFor="month">Month</Label>
+                <Label htmlFor="month" className="text-xs text-muted-foreground">Month</Label>
                 <Input
                   id="month"
                   type="number"
@@ -104,10 +105,11 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   onChange={(e) => handleNumberChange('month', e.target.value)}
                   min="1"
                   max="12"
+                  className="h-12 text-center"
                 />
               </div>
               <div>
-                <Label htmlFor="date">Date</Label>
+                <Label htmlFor="date" className="text-xs text-muted-foreground">Date</Label>
                 <Input
                   id="date"
                   type="number"
@@ -115,20 +117,21 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   onChange={(e) => handleNumberChange('date', e.target.value)}
                   min="1"
                   max="31"
+                  className="h-12 text-center"
                 />
               </div>
             </div>
           </div>
 
           {/* Time Section */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 font-semibold">
-              <Clock className="w-5 h-5 text-primary" />
-              Time
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 font-semibold text-sm">
+              <Clock className="w-4 h-4 text-primary" />
+              Time of Birth
             </div>
-            <div className="grid grid-cols-3 gap-4">
+            <div className="grid grid-cols-3 gap-3">
               <div>
-                <Label htmlFor="hours">Hours</Label>
+                <Label htmlFor="hours" className="text-xs text-muted-foreground">Hours</Label>
                 <Input
                   id="hours"
                   type="number"
@@ -136,10 +139,11 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   onChange={(e) => handleNumberChange('hours', e.target.value)}
                   min="0"
                   max="23"
+                  className="h-12 text-center"
                 />
               </div>
               <div>
-                <Label htmlFor="minutes">Minutes</Label>
+                <Label htmlFor="minutes" className="text-xs text-muted-foreground">Minutes</Label>
                 <Input
                   id="minutes"
                   type="number"
@@ -147,10 +151,11 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   onChange={(e) => handleNumberChange('minutes', e.target.value)}
                   min="0"
                   max="59"
+                  className="h-12 text-center"
                 />
               </div>
               <div>
-                <Label htmlFor="seconds">Seconds</Label>
+                <Label htmlFor="seconds" className="text-xs text-muted-foreground">Seconds</Label>
                 <Input
                   id="seconds"
                   type="number"
@@ -158,23 +163,24 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                   onChange={(e) => handleNumberChange('seconds', e.target.value)}
                   min="0"
                   max="59"
+                  className="h-12 text-center"
                 />
               </div>
             </div>
           </div>
 
           {/* Location Section */}
-          <div className="space-y-4">
-            <div className="flex items-center gap-2 font-semibold">
-              <MapPin className="w-5 h-5 text-primary" />
-              Location
+          <div className="space-y-3">
+            <div className="flex items-center gap-2 font-semibold text-sm">
+              <MapPin className="w-4 h-4 text-primary" />
+              Birth Location
             </div>
             
             <LocationSearch onLocationSelect={handleLocationSelect} />
             
             {selectedLocation && (
-              <div className="p-3 bg-muted rounded-lg">
-                <p className="font-medium">{selectedLocation}</p>
+              <div className="p-3 bg-muted/50 rounded-lg border">
+                <p className="font-medium text-sm">{selectedLocation}</p>
                 <p className="text-xs text-muted-foreground">
                   {birthDetails.latitude.toFixed(4)}, {birthDetails.longitude.toFixed(4)}
                 </p>
@@ -182,7 +188,7 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
             )}
 
             <div>
-              <Label htmlFor="timezone">Timezone (UTC offset)</Label>
+              <Label htmlFor="timezone" className="text-xs text-muted-foreground">Timezone (UTC offset)</Label>
               <Input
                 id="timezone"
                 type="number"
@@ -191,11 +197,12 @@ const BirthDetailsForm = ({ onSubmit, isLoading }: BirthDetailsFormProps) => {
                 onChange={(e) => handleNumberChange('timezone', e.target.value)}
                 min="-12"
                 max="14"
+                className="h-12 text-center"
               />
             </div>
           </div>
 
-          <Button type="submit" className="w-full" variant="sacred" disabled={isLoading}>
+          <Button type="submit" className="w-full h-12 text-base font-semibold" variant="sacred" disabled={isLoading}>
             {isLoading ? "Generating Charts..." : "Generate Charts"}
           </Button>
         </form>

@@ -56,46 +56,30 @@ const PlanetDisplay = ({ planets }: PlanetDisplayProps) => {
   }
 
   return (
-    <div className="space-y-4">
-      <h2 className="text-2xl font-bold text-center text-primary mb-6">Planetary Positions</h2>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div className="space-y-3">
+      <div className="grid grid-cols-1 gap-3">
         {validPlanets.map((planet, index) => (
-          <Card key={index} className="hover:shadow-lg transition-shadow">
-            <CardHeader className="pb-3">
-              <CardTitle className="flex items-center justify-between text-lg">
-                <span className="flex items-center gap-2">
+          <Card key={index} className="shadow-sm border">
+            <CardContent className="p-4">
+              <div className="flex items-center justify-between mb-3">
+                <div className="flex items-center gap-3">
                   <span className="text-2xl">{planetIcons[planet.name] || "★"}</span>
-                  {planet.name}
-                </span>
-                {planet.isRetro === "true" && (
-                  <Badge variant="destructive" className="text-xs">R</Badge>
-                )}
-              </CardTitle>
-            </CardHeader>
-            <CardContent className="space-y-2">
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Sign:</span>
-                <span className="font-semibold text-secondary">
-                  {getZodiacSign(planet.current_sign)}
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">Degree:</span>
-                <span className="font-mono">
-                  {typeof planet.normDegree === 'number' ? planet.normDegree.toFixed(2) : '0.00'}°
-                </span>
-              </div>
-              <div className="flex justify-between">
-                <span className="text-muted-foreground">House:</span>
-                <span className="font-semibold">{planet.current_sign || 'Unknown'}</span>
-              </div>
-              {planet.isRetro === "true" && (
-                <div className="text-center">
-                  <Badge variant="outline" className="text-destructive border-destructive">
-                    Retrograde
-                  </Badge>
+                  <div>
+                    <h3 className="font-semibold text-base">{planet.name}</h3>
+                    <p className="text-sm text-muted-foreground">
+                      {getZodiacSign(planet.current_sign)}
+                    </p>
+                  </div>
                 </div>
-              )}
+                <div className="text-right">
+                  <div className="font-mono text-sm font-medium">
+                    {typeof planet.normDegree === 'number' ? planet.normDegree.toFixed(1) : '0.0'}°
+                  </div>
+                  {planet.isRetro === "true" && (
+                    <Badge variant="destructive" className="text-xs mt-1">R</Badge>
+                  )}
+                </div>
+              </div>
             </CardContent>
           </Card>
         ))}

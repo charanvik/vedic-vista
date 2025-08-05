@@ -121,53 +121,48 @@ const Index = () => {
     setNavamshaPlanets([]);
   };
   return <div className="min-h-screen bg-background">
-      {/* Hero Section */}
-      <div className="relative h-64 bg-cover bg-center bg-no-repeat" style={{
-      backgroundImage: `linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url(${heroImage})`
-    }}>
-        <div className="absolute inset-0 flex items-center justify-center">
-          <div className="text-center text-white">
-            <h1 className="text-4xl md:text-5xl font-bold mb-2">ASTRO MANJITH</h1>
-            <p className="text-lg">Professional Chart Analysis</p>
-          </div>
+      {/* Mobile App Bar */}
+      <div className="sticky top-0 z-50 bg-primary text-primary-foreground shadow-lg">
+        <div className="px-4 py-3">
+          <h1 className="text-xl font-semibold">Astro Manjith</h1>
         </div>
       </div>
 
       {/* Main Content */}
-      <div className="container mx-auto px-4 py-8">
-        {!showResults ? <BirthDetailsForm onSubmit={generateChart} isLoading={isLoading} /> : <div className="space-y-6">
-            <div className="text-center">
-              <h2 className="text-2xl font-bold text-primary mb-2">Your Astrology Charts</h2>
+      <div className="px-3 py-4 space-y-4">
+        {!showResults ? <BirthDetailsForm onSubmit={generateChart} isLoading={isLoading} /> : <div className="space-y-4">
+            <div className="flex items-center justify-between bg-card p-4 rounded-lg shadow-sm">
+              <h2 className="text-lg font-semibold text-primary">Charts Ready</h2>
               <Button onClick={resetForm} variant="outline" size="sm">
-                Generate New Chart
+                New Chart
               </Button>
             </div>
 
             <Tabs defaultValue="planets" className="w-full">
-              <TabsList className="grid w-full grid-cols-4 max-w-2xl mx-auto">
-                <TabsTrigger value="planets" className="flex items-center gap-1">
-                  <Star className="w-4 h-4" />
-                  Planets
+              <TabsList className="grid w-full grid-cols-3 sticky top-16 z-40 bg-background/95 backdrop-blur">
+                <TabsTrigger value="planets" className="flex flex-col items-center gap-1 py-3">
+                  <Star className="w-5 h-5" />
+                  <span className="text-xs">Planets</span>
                 </TabsTrigger>
-                <TabsTrigger value="chart" className="flex items-center gap-1">
-                  <Moon className="w-4 h-4" />
-                  Birth Chart
+                <TabsTrigger value="chart" className="flex flex-col items-center gap-1 py-3">
+                  <Moon className="w-5 h-5" />
+                  <span className="text-xs">Birth Chart</span>
                 </TabsTrigger>
-                <TabsTrigger value="navamsha" className="flex items-center gap-1">
-                  <Sun className="w-4 h-4" />
-                  Navamsha
+                <TabsTrigger value="navamsha" className="flex flex-col items-center gap-1 py-3">
+                  <Sun className="w-5 h-5" />
+                  <span className="text-xs">Navamsha</span>
                 </TabsTrigger>
               </TabsList>
               
-              <TabsContent value="planets" className="mt-6">
+              <TabsContent value="planets" className="mt-4 px-1">
                 <PlanetDisplay planets={planets} />
               </TabsContent>
               
-              <TabsContent value="chart" className="mt-6">
+              <TabsContent value="chart" className="mt-4 px-1">
                 <AstrologyChart planets={planets} />
               </TabsContent>
               
-              <TabsContent value="navamsha" className="mt-6">
+              <TabsContent value="navamsha" className="mt-4 px-1">
                 <NavamshaChart planets={navamshaPlanets} />
               </TabsContent>
             </Tabs>
