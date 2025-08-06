@@ -47,7 +47,9 @@ const NavamshaChart = ({ planets }: NavamshaChartProps) => {
       
       planets.forEach(planet => {
         if (planet && planet.name && typeof planet.house_number === 'number') {
-          const houseId = `house${planet.house_number}`;
+          // Fix house positioning - API returns 0-based house numbers, convert to 1-based
+          const adjustedHouseNumber = planet.house_number === 0 ? 12 : planet.house_number;
+          const houseId = `house${adjustedHouseNumber}`;
           if (!housesWithPlanets[houseId]) housesWithPlanets[houseId] = [];
           housesWithPlanets[houseId].push(planet);
         }
